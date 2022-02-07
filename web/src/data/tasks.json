@@ -1,0 +1,26 @@
+[
+  {
+    "id": "171738f8-8c10-4afe-8cd6-d019cbbf3b1b",
+    "task": "Comprar harina, jamón y pan rallado",
+    "isCompleted": true,
+    "isFavorite": false
+  },
+  {
+    "id": "4e1e2bbc-5690-4467-9d5f-36da016f4936",
+    "task": "Hacer croquetas ricas",
+    "isCompleted": true,
+    "isFavorite": false
+  },
+  {
+    "id": "8658aefc-80a9-4852-9680-3df98f3ebac8",
+    "task": "Ir a la puerta de un gimnasio",
+    "isCompleted": false,
+    "isFavorite": false
+  },
+  {
+    "id": "c9164187-f547-460a-9e76-941043980f90",
+    "task": "Comerme las croquetas mirando a la gente que entra en el gimnasio",
+    "isCompleted": false,
+    "isFavorite": false
+  }
+]

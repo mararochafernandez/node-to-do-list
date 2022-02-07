@@ -1,0 +1,42 @@
+.footer {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.6em;
+  color: $grey;
+  border-top: 1px solid $grey-light;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  margin-top: 40px;
+  @include tablet {
+    flex-direction: row;
+    align-items: baseline;
+    padding-bottom: 0;
+  }
+  @include desktop {
+    padding-top: 60px;
+  }
+  &__copy {
+    @include tablet {
+      padding: 5px 0;
+    }
+  }
+  &__menu {
+    display: flex;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    @include tablet {
+      margin-bottom: 0;
+    }
+  }
+  &__item {
+    padding: 5px 5px;
+  }
+  &__link {
+    color: $grey;
+    &:hover {
+      color: $color-main;
+    }
+  }
+}

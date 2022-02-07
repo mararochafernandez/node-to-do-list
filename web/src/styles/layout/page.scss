@@ -1,0 +1,54 @@
+body {
+  font-family: $font-main;
+  font-size: 10px;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  @include tablet {
+    width: 688px;
+    margin: 40px auto;
+  }
+  @include desktop {
+    width: 1080px;
+    margin: 60px auto;
+  }
+}
+
+.main {
+  min-height: calc(100vh - 330px);
+  @include tablet {
+    min-height: calc(100vh - 283px);
+  }
+  @include desktop {
+    min-height: calc(100vh - 352px);
+  }
+}
+
+.task-info {
+  &__list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    font-size: 1.6em;
+    color: $grey-dark;
+    @include tablet {
+      flex-direction: row;
+    }
+  }
+  &__item {
+    display: flex;
+    margin-top: 10px;
+    @include tablet {
+      & + & {
+        padding-left: 40px;
+      }
+    }
+  }
+  &__result {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+}
