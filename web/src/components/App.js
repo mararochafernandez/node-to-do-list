@@ -1,17 +1,26 @@
 import '../styles/App.scss';
 import { useEffect, useState } from 'react';
 import localStorage from '../services/localstorage';
+import callToApi from '../services/api';
 import { v4 as uuid } from 'uuid';
-import data from '../data/tasks';
+//import data from '../data/tasks';
 
 function App() {
   /* Let's do magic! 🦄🦄🦄 */
 
-  const [tasks, setTasks] = useState(localStorage.get('tasks', data));
+  const [tasks, setTasks] = useState(localStorage.get('tasks', []));
   const [newTaskInput, setNewTaskInput] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterTerm, setFilterTerm] = useState('all');
 
+  // api
+  useEffect(() => {
+    callToApi().then((dataFromApi) => {
+      setTasks(dataFromApi);
+    });
+  }, []);
+
+  // local storage
   useEffect(() => {
     if (tasks.length > 0) {
       localStorage.set('tasks', tasks);
@@ -60,7 +69,7 @@ function App() {
     if (newTaskInput) {
       setTasks([
         ...tasks,
-        { id: uuid(), task: newTaskInput, isCompleted: false },
+        { id: uuid(), name: newTaskInput, isCompleted: false },
       ]);
       setNewTaskInput('');
     }
@@ -80,7 +89,7 @@ function App() {
 
   const filterTasks = () => {
     let filteredTasks = tasks.filter((task) =>
-      task.task.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())
+      task.name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())
     );
     if (filterTerm === 'completed') {
       filteredTasks = filteredTasks.filter((task) => task.isCompleted);
@@ -111,7 +120,7 @@ function App() {
         </div>
 
         <span id={task.id} className="task__name">
-          {task.task}
+          {task.name}
         </span>
 
         <div

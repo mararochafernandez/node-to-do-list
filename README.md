@@ -29,13 +29,17 @@ Ejercicio **To Do List** completo y mejorado (versión 2).
 
 - [x] Crear servidor con Node JS y Express JS.
 - [x] Crear base de datos con SQLite.
-- [x] Implementar endpoints de la API.
+- [x] Crear endpoints de la API.
 - [ ] Implementar inicio de sesión (endpoint).
 
 ### Desarrollo en el frontend
 
 - [ ] Crear componentes de React.
-- [ ] Implementar servicio de API.
+- [x] Crear servicio de API.
+- [x] Obtener tareas de la base de datos.
+- [ ] Eliminar tarea de la base de datos.
+- [ ] Tachar tarea en la base de datos.
+- [ ] Destacar tarea en la base de datos.
 - [ ] Implementar inicio de sesión (formulario).
 
 ---
