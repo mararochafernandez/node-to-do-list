@@ -27,7 +27,9 @@ const db = new Database('./src/database.db', {
 // get tasks
 // http://localhost:3000/tasks
 app.get('/tasks', (req, res) => {
-  const query = db.prepare('SELECT * FROM tasks ORDER BY isCompleted');
+  const query = db.prepare(
+    'SELECT * FROM tasks ORDER BY isCompleted, isFavorite DESC'
+  );
   const tasks = query.all();
 
   res.json({
@@ -41,6 +43,7 @@ app.get('/tasks', (req, res) => {
 app.post('/task', (req, res) => {
   const id = req.body.id;
   const name = req.body.name;
+  console.log(id, name);
 
   if (id && name) {
     const query = db.prepare('SELECT id FROM tasks WHERE id = ?');

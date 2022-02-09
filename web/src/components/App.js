@@ -1,46 +1,72 @@
 import '../styles/App.scss';
 import { useEffect, useState } from 'react';
-import localStorage from '../services/localstorage';
-import callToApi from '../services/api';
+import ls from '../services/localstorage';
+import api from '../services/api';
 import { v4 as uuid } from 'uuid';
 //import data from '../data/tasks';
 
 function App() {
   /* Let's do magic! 🦄🦄🦄 */
 
-  const [tasks, setTasks] = useState(localStorage.get('tasks', []));
-  const [newTaskInput, setNewTaskInput] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterTerm, setFilterTerm] = useState('all');
+  const [tasks, setTasks] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(
+    ls.get('formData', {}).searchTerm || ''
+  );
+  const [filterTerm, setFilterTerm] = useState(
+    ls.get('formData', {}).filterTerm || 'all'
+  );
+  const [newTaskInput, setNewTaskInput] = useState(
+    ls.get('formData', {}).newTaskInput || ''
+  );
+
+  // local storage
+
+  useEffect(() => {
+    ls.set('formData', {
+      newTaskInput: newTaskInput,
+      searchTerm: searchTerm,
+      filterTerm: filterTerm,
+    });
+  }, [newTaskInput, searchTerm, filterTerm]);
 
   // api
+
   useEffect(() => {
-    callToApi().then((dataFromApi) => {
-      setTasks(dataFromApi);
+    api.getTasksFromApi().then((tasksFromApi) => {
+      setTasks(tasksFromApi);
     });
   }, []);
 
-  // local storage
-  useEffect(() => {
-    if (tasks.length > 0) {
-      localStorage.set('tasks', tasks);
-    } else {
-      localStorage.clear();
-    }
-  }, [tasks]);
+  // event handlers
+
+  const handleSearchInput = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   const handleFilterSelect = (event) => {
     setFilterTerm(event.target.value);
   };
 
-  const handleFavoriteIcon = (event) => {
-    const foundIndex = tasks.findIndex(
-      (task) => task.id === event.currentTarget.parentNode.id
-    );
-    if (foundIndex !== -1) {
-      tasks[foundIndex].isFavorite = !tasks[foundIndex].isFavorite;
-      setTasks([...tasks]);
+  const handleNewTaskInput = (event) => {
+    setNewTaskInput(event.target.value);
+  };
+
+  const handleNewTaskButton = () => {
+    if (newTaskInput) {
+      const newTask = {
+        id: uuid(),
+        name: newTaskInput,
+      };
+
+      api.sendTaskToApi(newTask).then(() => {
+        setTasks([...tasks, newTask]);
+        setNewTaskInput('');
+      });
     }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
   };
 
   const handleCompletedTask = (event) => {
@@ -55,6 +81,16 @@ function App() {
     }
   };
 
+  const handleFavoriteIcon = (event) => {
+    const foundIndex = tasks.findIndex(
+      (task) => task.id === event.currentTarget.parentNode.id
+    );
+    if (foundIndex !== -1) {
+      tasks[foundIndex].isFavorite = !tasks[foundIndex].isFavorite;
+      setTasks([...tasks]);
+    }
+  };
+
   const handleRemoveIcon = (event) => {
     const foundIndex = tasks.findIndex(
       (task) => task.id === event.currentTarget.parentNode.id
@@ -65,27 +101,7 @@ function App() {
     }
   };
 
-  const handleNewTaskButton = () => {
-    if (newTaskInput) {
-      setTasks([
-        ...tasks,
-        { id: uuid(), name: newTaskInput, isCompleted: false },
-      ]);
-      setNewTaskInput('');
-    }
-  };
-
-  const handleNewTaskInput = (event) => {
-    setNewTaskInput(event.target.value);
-  };
-
-  const handleSearchInput = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+  // render helpers
 
   const filterTasks = () => {
     let filteredTasks = tasks.filter((task) =>
